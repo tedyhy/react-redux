@@ -1,7 +1,7 @@
 import { Component, Children } from 'react'
 // Runtime type checking for React props and similar objects
 // 参考 https://github.com/reactjs/prop-types
-// import {PropTypes} from 'react'; 属于 react 子模块。
+// 为什么不用 React.propTypes，参考 https://facebook.github.io/react/docs/typechecking-with-proptypes.html
 import PropTypes from 'prop-types'
 // 自定义属性类型校验集合 shape
 import { storeShape, subscriptionShape } from '../utils/PropTypes'
@@ -56,6 +56,7 @@ function warnAboutReceivingStore() {
 // 定义一个容器类组件 Provider，继承自 Component
 export default class Provider extends Component {
   // 与 Provider.childContextTypes = {} 配合使用，向下传递数据到组件树中的任意子组件。
+  // 子组件都可以通过 context 取到 store。
   getChildContext() {
     return { store: this.store, storeSubscription: null }
   }
@@ -75,7 +76,8 @@ export default class Provider extends Component {
   }
 
   render() {
-    // Children.only 返回 this.props.children 中仅有的子级。否则抛出异常。
+    // Children.only 返回 this.props.children 中仅有的子级。
+    // 即：render 其中第一个子组件，并且要求组件的第一级子组件只有一个。否则抛出异常。
     return Children.only(this.props.children)
   }
 }

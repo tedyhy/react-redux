@@ -1,8 +1,13 @@
+// 从子组件中拷贝非 React 指定的静态属性到父组件
 import hoistStatics from 'hoist-non-react-statics'
+// 用于抛出指定格式化的错误信息
 import invariant from 'invariant'
+// 调用 React 的 Component、createElement 方法
 import { Component, createElement } from 'react'
 
+// 订阅器
 import Subscription from '../utils/Subscription'
+// 两个自定义属性类型校验集合
 import { storeShape, subscriptionShape } from '../utils/PropTypes'
 
 let hotReloadingVersion = 0
@@ -86,6 +91,8 @@ export default function connectAdvanced(
     [subscriptionKey]: subscriptionShape,
   }
 
+  // 第二次执行函数接收的参数是个React组件 WrappedComponent，之后返回一个新的 React 组件 Connect。
+  // 如：connect(mapStateToProps, mapDispatchToProps)(WrappedComponent)
   return function wrapWithConnect(WrappedComponent) {
     invariant(
       typeof WrappedComponent == 'function',
@@ -278,6 +285,7 @@ export default function connectAdvanced(
       }
     }
 
+    // 将 WrappedComponent 组件上的静态非 React 属性拷贝到组件 Connect 上。
     return hoistStatics(Connect, WrappedComponent)
   }
 }

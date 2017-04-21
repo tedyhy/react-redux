@@ -2,6 +2,7 @@
 
 import expect from 'expect'
 import React, { Children, Component } from 'react'
+// 参考 https://facebook.github.io/react/docs/react-without-es6.html
 import createClass from 'create-react-class'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
