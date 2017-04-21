@@ -71,6 +71,12 @@ function strictEqual(a, b) { return a === b }
 // createConnect with default args builds the 'official' connect behavior. Calling it with
 // different options opens up some testing and extensibility scenarios
 // connect 生成器
+// 参数：
+// connectHOC === connectAdvanced
+// mapStateToPropsFactories === defaultMapStateToPropsFactories
+// mapDispatchToPropsFactories === defaultMapDispatchToPropsFactories
+// mergePropsFactories === defaultMergePropsFactories
+// selectorFactory === defaultSelectorFactory
 export function createConnect({
   connectHOC = connectAdvanced,
   mapStateToPropsFactories = defaultMapStateToPropsFactories,
@@ -78,7 +84,9 @@ export function createConnect({
   mergePropsFactories = defaultMergePropsFactories,
   selectorFactory = defaultSelectorFactory
 } = {}) {
+  // 如：export default connect(mapStateToProps, mapDispatchToProps)(Step);
   return function connect(
+    // 默认4个参数
     mapStateToProps,
     mapDispatchToProps,
     mergeProps,
@@ -95,11 +103,14 @@ export function createConnect({
     const initMapDispatchToProps = match(mapDispatchToProps, mapDispatchToPropsFactories, 'mapDispatchToProps')
     const initMergeProps = match(mergeProps, mergePropsFactories, 'mergeProps')
 
+    // connectHOC 创建组件 Connect，并将传参 WrappedComponent 组件上的静态非 React 属性拷贝到自身。
     return connectHOC(selectorFactory, {
       // used in error messages
+      // 被用在错误信息中输出
       methodName: 'connect',
 
-       // used to compute Connect's displayName from the wrapped component's displayName.
+      // used to compute Connect's displayName from the wrapped component's displayName.
+      // 用于从包装组件的 displayName 中计算得出 Connect 的 displayName。
       getDisplayName: name => `Connect(${name})`,
 
       // if mapStateToProps is falsy, the Connect component doesn't subscribe to store state changes

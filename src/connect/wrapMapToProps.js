@@ -1,5 +1,6 @@
 import verifyPlainObject from '../utils/verifyPlainObject'
 
+// 包装映射到 this.props 上的常量
 export function wrapMapToPropsConstant(getConstant) {
   return function initConstantSelector(dispatch, options) {
     const constant = getConstant(dispatch, options)
@@ -17,7 +18,13 @@ export function wrapMapToPropsConstant(getConstant) {
 // A length of one signals that mapToProps does not depend on props from the parent component.
 // A length of zero is assumed to mean mapToProps is getting args via arguments or ...args and
 // therefore not reporting its length accurately..
+// 
+// mapToProps 为函数。
+// mapToProps.dependsOnOwnProps 为 Boolean。
+// 判断 map(State|Dispatch)ToProps 方法是否需要 ownProps。
+// 返回值决定了在 props 更新的时候，是否要调用 map(State|Dispatch)ToProps 方法进行更新。
 export function getDependsOnOwnProps(mapToProps) {
+  // 如果 mapToProps.dependsOnOwnProps 不为 null 和 undefined，将其转换为布尔值。
   return (mapToProps.dependsOnOwnProps !== null && mapToProps.dependsOnOwnProps !== undefined)
     ? Boolean(mapToProps.dependsOnOwnProps)
     : mapToProps.length !== 1

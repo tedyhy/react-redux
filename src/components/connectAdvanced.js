@@ -94,16 +94,20 @@ export default function connectAdvanced(
   // 第二次执行函数接收的参数是个React组件 WrappedComponent，之后返回一个新的 React 组件 Connect。
   // 如：connect(mapStateToProps, mapDispatchToProps)(WrappedComponent)
   return function wrapWithConnect(WrappedComponent) {
+    // 如果 WrappedComponent !== 'function'，抛出错误，即：WrappedComponent 必须是组件。
     invariant(
       typeof WrappedComponent == 'function',
       `You must pass a component to the function returned by ` +
       `connect. Instead received ${JSON.stringify(WrappedComponent)}`
     )
 
+    // 获取组件 WrappedComponent.displayName，如果没有设置，默认为 WrappedComponent 类名/函数名。
+    // 如果是匿名组件，则默认为 'Component'。
     const wrappedComponentName = WrappedComponent.displayName
       || WrappedComponent.name
       || 'Component'
 
+    // 通过 getDisplayName 函数返回 `ConnectAdvanced(${wrappedComponentName})`。
     const displayName = getDisplayName(wrappedComponentName)
 
     const selectorFactoryOptions = {
@@ -119,6 +123,7 @@ export default function connectAdvanced(
       WrappedComponent
     }
 
+    // 生成新的组件 Connect
     class Connect extends Component {
       constructor(props, context) {
         super(props, context)
