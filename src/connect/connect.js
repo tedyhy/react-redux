@@ -55,6 +55,9 @@ import defaultSelectorFactory from './selectorFactory'
   第二次传入的是你要连接的React组件，然后返回一个新的React组件。
  */
 
+
+// 将数组 factories 中函数从右向左遍历，依次校验过滤。一旦其中一个函数执行后有值，则停止遍历，返回值。
+// 如果数组 factories 中的函数都不符合，则抛出错误。
 function match(arg, factories, name) {
   for (let i = factories.length - 1; i >= 0; i--) {
     const result = factories[i](arg)
@@ -66,6 +69,7 @@ function match(arg, factories, name) {
   }
 }
 
+// 全等校验方法
 function strictEqual(a, b) { return a === b }
 
 // createConnect with default args builds the 'official' connect behavior. Calling it with

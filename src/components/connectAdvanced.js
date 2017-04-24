@@ -276,6 +276,7 @@ export default function connectAdvanced(
     Connect.contextTypes = contextTypes
     Connect.propTypes = contextTypes
 
+    // 非线上环境，重写周期方法 componentWillUpdate
     if (process.env.NODE_ENV !== 'production') {
       Connect.prototype.componentWillUpdate = function componentWillUpdate() {
         // We are hot reloading!
